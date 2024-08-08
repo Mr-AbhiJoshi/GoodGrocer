@@ -60,3 +60,20 @@ def registerUser(request):
     
     context = {'form':form}
     return render(request, 'login_register.html', context)
+
+def shop(request):
+    context = {}
+    return render(request, 'shop.html', context)
+
+def product(request, pk):
+    context = {}
+    return render(request, 'product.html', context)
+
+@login_required(login_url='login')
+def cart(request):
+    context = {}
+    return render(request, 'cart.html', context)
+
+def learn(request):
+    context = {}
+    return render(request, 'learn.html', context)
