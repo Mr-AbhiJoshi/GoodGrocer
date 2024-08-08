@@ -239,24 +239,16 @@ body {
       
           <!-- Three columns of text below the carousel -->
           <div class="row">
+            {% for category in category %}
+            {% with image_path='images/productCategory/'|add:category.imageTag|add:'.jpg' %}
             <div class="col-lg-4">
-              <img src="{% static 'images/heading1.jpg' %}" alt="Image 1" class="bd-placeholder-img rounded-circle" width="140" height="140">
-              <h2 class="fw-normal">Fruit & Veg</h2>
-              <p>Buy fresh fruits and vegetables and maintain that healthy spirit. A sound mind in a sound body.</p>
+              <img src="{% static image_path %}" alt="{{category.name}}" class="bd-placeholder-img rounded-circle" width="140" height="140">
+              {% endwith %}
+              <h2 class="fw-normal">{{category.name}}</h2>
+              <p>{{category.description}}</p>
               <p><a class="btn btn-secondary" href="#">Shop Now &raquo;</a></p>
             </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
-              <img src="{% static 'images/heading2.jpg' %}" alt="Image 1" class="bd-placeholder-img rounded-circle" width="140" height="140">
-              <h2 class="fw-normal">Snacks & Drinks</h2>
-              <p>Sometimes, it's good to give in the cravings. Try our latest range of healthy baked snacks.</p>
-              <p><a class="btn btn-secondary" href="#">Shop Now &raquo;</a></p>
-            </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
-              <img src="{% static 'images/heading3.jpg' %}" alt="Image 1" class="bd-placeholder-img rounded-circle" width="140" height="140">
-              <h2 class="fw-normal">Laundry & Cleaning</h2>
-              <p>Nobody can escape the dishes. Stock up on cleaning supplies before the big winter.</p>
-              <p><a class="btn btn-secondary" href="#">Shop Now &raquo;</a></p>
-            </div><!-- /.col-lg-4 -->
+            {% endfor %}
           </div><!-- /.row -->
       
       

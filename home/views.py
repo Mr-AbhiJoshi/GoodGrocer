@@ -5,13 +5,14 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-#from .models import <Your model names>
+from .models import  productCategory, productSubcategory, productItem
 #from .forms import <Your form names>
 
 
 # Create your views here.
 def home(request):
-    context = {}
+    category = productCategory.objects.all()
+    context = {'category':category}
     return render(request, 'home.html', context)
 
 def loginUser(request):
@@ -62,7 +63,11 @@ def registerUser(request):
     return render(request, 'login_register.html', context)
 
 def shop(request):
-    context = {}
+    categories = productCategory.objects.all()
+    subcategories = productSubcategory.objects.all()
+    products = productItem.objects.all()
+    onDealProducts = productItem.objects.filter(onDeal=True)
+    context = {'categories':categories, 'subcategories':subcategories, 'products':products, 'onDealProducts':onDealProducts}
     return render(request, 'shop.html', context)
 
 def product(request, pk):
