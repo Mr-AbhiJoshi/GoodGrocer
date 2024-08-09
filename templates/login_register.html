@@ -1,5 +1,5 @@
 {% extends 'main.html' %}
-
+{% load static %}
 {% block title %}
     {% if user_exists == 'yes' %}
     Login
@@ -9,31 +9,170 @@
 {% endblock title %}
 
 {% block body %}
-{% if user_exists == 'yes' %}
-<form method="POST" action="">
-    {% csrf_token %}
-    <label for="username">Username</label>
-    <input type="text" name="username" placeholder="Enter Username" />
+<style>
+    html, body {
+    height: 100%;
+    }
 
-    <label for="username">Password</label>
-    <input type="text" name="password" placeholder="Enter Password" />
+    .form-signin {
+    max-width: 330px;
+    padding: 1rem;
+    }
 
-    <button type="submit">Login</button>
-</form>
+    .form-signin .form-floating:focus-within {
+    z-index: 2;
+    }
 
-<p>Haven't signed up?</p>
-<a href="{% url 'register' %}">Register</a>
+    .form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    }
 
-{% else %}
-<form method="POST" action="">
-    {% csrf_token %}
-    {{form}}
+    .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    }
 
-    <button type="submit">Register</button>
-</form>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
 
-<p>Already signed up?</p>
-<a href="{% url 'login' %}">Login</a>
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
 
-{% endif %}
-{% endblock body %}
+    .b-example-divider {
+      width: 100%;
+      height: 3rem;
+      background-color: rgba(0, 0, 0, .1);
+      border: solid rgba(0, 0, 0, .15);
+      border-width: 1px 0;
+      box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+    }
+
+    .b-example-vr {
+      flex-shrink: 0;
+      width: 1.5rem;
+      height: 100vh;
+    }
+
+    .bi {
+      vertical-align: -.125em;
+      fill: currentColor;
+    }
+
+    .nav-scroller {
+      position: relative;
+      z-index: 2;
+      height: 2.75rem;
+      overflow-y: hidden;
+    }
+
+    .nav-scroller .nav {
+      display: flex;
+      flex-wrap: nowrap;
+      padding-bottom: 1rem;
+      margin-top: -1px;
+      overflow-x: auto;
+      text-align: center;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .btn-bd-primary {
+      --bd-violet-bg: #712cf9;
+      --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+      --bs-btn-font-weight: 600;
+      --bs-btn-color: var(--bs-white);
+      --bs-btn-bg: var(--bd-violet-bg);
+      --bs-btn-border-color: var(--bd-violet-bg);
+      --bs-btn-hover-color: var(--bs-white);
+      --bs-btn-hover-bg: #6528e0;
+      --bs-btn-hover-border-color: #6528e0;
+      --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+      --bs-btn-active-color: var(--bs-btn-hover-color);
+      --bs-btn-active-bg: #5a23c8;
+      --bs-btn-active-border-color: #5a23c8;
+    }
+
+    .bd-mode-toggle {
+      z-index: 1500;
+    }
+
+    .bd-mode-toggle .dropdown-menu .active .bi {
+      display: block !important;
+    }
+  </style>
+
+  <main class="form-signin w-100 m-auto">
+    {% if user_exists == 'yes' %}
+    <form method="POST" action="">
+      {% csrf_token %}
+      <h1 class="h3 mb-3 fw-normal">Sign in</h1>
+            <div class="form-floating">
+                <input type="text" name="username" class="form-control" id="floatingInput" placeholder="">
+                <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-floating my-3">
+                <input type="password" name="password" class="form-control" id="floatingInput" placeholder="">
+                <label for="floatingInput">Password</label>
+            </div>
+            <div class="form-check text-start my-3">
+                <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Remember me
+                </label>
+            </div>
+            <button class="btn btn-primary w-100 my-2 py-2" type="submit">Login</button>
+        </form>
+        <section>
+        <div class ='text-center my-4'>
+            <h5>Haven't signed up?</h5>
+            <a class="btn btn-light btn-outline-dark" href="{% url 'register' %}">Register</a>
+        </div>
+        </section>
+
+        {% else %}
+        <form method="POST" action="">
+            {% csrf_token %}
+            <h1 class="h3 mb-3 fw-normal">Sign up</h1>
+            {% for field in form %}
+            <div class="form-floating my-3">
+                <input type="{{field.field.widget.input_type}}" name="{{field.name}}" class="form-control" id="floatingInput" placeholder="{{field.label}}">
+                <label for="floatingInput">
+                    {% if field.name == 'username' %}
+                        Username
+                    {% elif field.name == 'password1' %}
+                        Password
+                    {% elif field.name == 'password2' %}
+                        Re-enter Password
+                    {% else %}
+                        {{ field.label }}
+                    {% endif %}
+                </label>
+            </div>
+            {% endfor %}
+            <button class="btn btn-primary w-100 my-4 py-2" type="submit">Register</button>
+            </form>
+            <section>
+                <div class ='text-center my-4'>
+                    <h5>Already signed up?</h5>
+                    <a class="btn btn-light btn-outline-dark" href="{% url 'login' %}">Login</a>
+                </div>
+                </section>
+
+        {% endif %}
+
+
+    <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </main>
+{% endblock body %}  

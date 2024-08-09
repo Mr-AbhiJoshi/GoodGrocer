@@ -27,10 +27,11 @@
             style="width: 400px;"
           />
         </form>
-        <a class="btn btn-info btn-outline-dark ms-3" href="{% url 'cart' %}" style="width: 100px;">Your Cart</a>
         {% if request.user.is_authenticated %}
+        <a class="btn btn-info btn-outline-dark ms-3" href="{% url 'cart' %}" style="width: absolute;">{{request.user}}'s Cart</a>
         <a class="btn btn-light btn-outline-dark ms-3" href="{% url 'logout' %}" style="width: 100px;">Logout</a>
         {% else %}
+        <a class="btn btn-info btn-outline-dark ms-3" href="{% url 'cart' %}" style="width: 100px;">Cart</a>
         <a class="btn btn-light btn-outline-dark ms-3" href="{% url 'login' %}" style="width: 100px;">Login</a>
         {% endif %}
       </div>
