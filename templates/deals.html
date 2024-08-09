@@ -1,0 +1,24 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}
+    Shop
+{% endblock title %}
+
+{% block body %}
+<style>
+    .shop-container{
+        display : grid;
+        grid-template-columns: 0.75fr 3.25fr;
+    }
+</style>
+
+<div class="shop-container">
+    <div>
+        {% include 'sidebar.html' %}
+    </div>
+    <div>
+        {% include 'product_list.html' %}
+    </div>
+</div>
+{% endblock body %}
