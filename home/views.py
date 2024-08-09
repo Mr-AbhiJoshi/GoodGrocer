@@ -80,7 +80,8 @@ def shopPage(request):
     return render(request, 'shop.html', context)
 
 def productDisplay(request, pk):
-    context = {}
+    givenProduct = productItem.objects.get(id=pk)
+    context = {'product':givenProduct}
     return render(request, 'product_display.html', context)
 
 @login_required(login_url='login')

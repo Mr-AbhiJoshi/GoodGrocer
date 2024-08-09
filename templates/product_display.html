@@ -6,5 +6,16 @@
 {% endblock title %}
 
 {% block body %}
-Product
+
+<div class="p-5 mb-4 bg-body-tertiary rounded-3">
+    <div class="container-fluid py-5">
+      <h1 class="display-5 fw-bold">{{product.name}}</h1>
+      {% with image_path='images/product/'|add:product.imageTag|add:'.jpg' %}
+      <img src="{% static image_path %}" alt="Thumbnail" width="400" height="400">
+      {% endwith %}
+      <p class="col-md-8 fs-4">{{product.quantity}} for only ${{product.price}}. That's a steal, Buy today!!
+      </p>
+      <button class="btn btn-primary btn-lg" type="button">Add to Cart</button>
+    </div>
+  </div>
 {% endblock body %}
