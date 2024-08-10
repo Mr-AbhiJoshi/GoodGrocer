@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Product
+    {{product.name}}
 {% endblock title %}
 
 {% block body %}
@@ -15,7 +15,7 @@
       {% endwith %}
       <p class="col-md-8 fs-4">{{product.quantity}} for only ${{product.price}}. That's a steal, Buy today!!
       </p>
-      <button class="btn btn-primary btn-lg" type="button">Add to Cart</button>
+      <a class="btn btn-primary" href="{% url 'addToCart' product.id %}" style="width: absolute;">Add to Cart</a>
     </div>
   </div>
 {% endblock body %}

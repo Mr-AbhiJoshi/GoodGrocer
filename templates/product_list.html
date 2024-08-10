@@ -122,7 +122,7 @@
                                         <h5 style="color:orangered">On Special !!</h5>
                                     {% endif %}
                                 {% endif %}
-                                <button type="button" class="btn btn-primary my-2">Add to Cart</button>
+                                <a class="btn btn-primary" href="{% url 'addToCart' product.id %}" style="width: absolute;">Add to Cart</a>
                             </div>
                         </div>
                     </div>

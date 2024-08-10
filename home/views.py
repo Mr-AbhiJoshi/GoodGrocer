@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import  productCategory, productSubcategory, productItem
+from .models import  productCategory, productSubcategory, productItem, Cart, CartItem
 #from .forms import <Your form names>
 
 
@@ -85,8 +85,16 @@ def productDisplay(request, pk):
     return render(request, 'product_display.html', context)
 
 @login_required(login_url='login')
-def cartPage(request):
-    context = {}
+def cartPage(request, pk):
+    givenUser = User.objects.get(id=pk)
+    cart, created = Cart.objects.get_or_create(user=givenUser)
+    cartItems = cart.cartitem_set.all()
+    total_price = sum(item.total_price() for item in cartItems)
+
+    context = {
+        'cartItems': cartItems,
+        'total_price': total_price,
+    }
     return render(request, 'cart.html', context)
 
 def learnPage(request):
@@ -107,3 +115,37 @@ def dealsPage(request):
     product_count = products.count()
     context = {'categories':categories, 'subcategories':subcategories, 'products':products, 'product_count':product_count}
     return render(request, 'deals.html', context)
+
+@login_required(login_url='login')
+def addToCart(request, pk):
+    product = productItem.objects.get(id=pk)
+    cart, created = Cart.objects.get_or_create(user=request.user)
+
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+
+    cartItems = cart.cartitem_set.all()
+    total_price = sum(item.total_price() for item in cartItems)
+
+    context = {'cart_active': True, 'cartItems': cartItems, 'total_price': total_price}
+    return render(request, 'cart.html', context)
+
+def removeFromCart(request, pk):
+    givenProduct = productItem.objects.get(id=pk)
+    cart = Cart.objects.get(user=request.user)
+    cart_item = CartItem.objects.get(cart=cart, product=givenProduct)
+
+    if cart_item.quantity > 1:
+        cart_item.quantity -= 1
+        cart_item.save()
+    else:
+        cart_item.delete()
+
+    return redirect('cart', request.user.id)
+
+def checkoutPage(request):
+    context = {}
+    return render(request, 'checkout.html', context)
