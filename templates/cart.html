@@ -41,9 +41,11 @@
 
 <h3>Total Cart Price: ${{ total_price|floatformat:2 }}</h3>
 
+<a class="btn btn-danger" href="{% url 'clearCart' request.user.id %}">Clear Cart</a>
+
 <a class="btn btn-primary" href="{% url 'shop' %}">Continue Shopping</a>
 
-<a class="btn btn-secondary" href="{% url 'checkout' %}">Checkout</a>
+<a class="btn btn-secondary" href="{% url 'checkout' request.user.id %}">Checkout</a>
 
 {% else %}
 

@@ -146,6 +146,36 @@ def removeFromCart(request, pk):
 
     return redirect('cart', request.user.id)
 
-def checkoutPage(request):
-    context = {}
+def clearCart(request, pk):
+    givenUser = User.objects.get(id=pk)
+    cart = Cart.objects.get(user=givenUser)
+    
+    if cart:
+        cart.delete()
+
+    return redirect('cart', request.user.id)
+
+def checkoutPage(request, pk):
+    if request.method == 'POST':
+        givenUser = User.objects.get(id=request.user.id)
+        cart = Cart.objects.get(user=givenUser)
+    
+        if cart:
+            cart.delete()
+        
+        return redirect('orderPlaced')
+    
+    givenUser = User.objects.get(id=pk)
+    cart, created = Cart.objects.get_or_create(user=givenUser)
+    cartItems = cart.cartitem_set.all()
+    total_price = sum(item.total_price() for item in cartItems)
+    total_items = cartItems.count()
+    
+    context = {
+        'cartItems': cartItems, 'total_price': total_price, 'total_items':total_items}
+    
     return render(request, 'checkout.html', context)
+
+def orderPlaced(request):
+    context = {}
+    return render(request, 'order_placed.html', context)
