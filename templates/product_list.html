@@ -117,11 +117,9 @@
                               </div>
                             </a>
                             <div class="mt-auto">
-                                {% if page == 'shop' %}
                                     {% if product.onDeal == True %}
                                         <h5 style="color:orangered">On Special !!</h5>
                                     {% endif %}
-                                {% endif %}
                                 <a class="btn btn-primary" href="{% url 'addToCart' product.id %}" style="width: absolute;">Add to Cart</a>
                             </div>
                         </div>

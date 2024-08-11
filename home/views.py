@@ -50,18 +50,19 @@ def registerUser(request):
     
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
-        if form.is_valid:
+        if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, 'An error occured during registration')
+            messages.error(request, 'An error occured during registration. Please ensure you are filling the form correctly!')
     
     context = {'form':form}
     return render(request, 'login_register.html', context)
 
+@login_required(login_url='login')
 def shopPage(request):
     page = 'shop'
     q = request.GET.get('q') if request.GET.get('q') is not None else ''

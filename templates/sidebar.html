@@ -1,7 +1,7 @@
 <h2>Browse Products</h2>
 <hr />
 <a class="btn btn-light btn-outline-dark ms-3" href="{% url 'shop' %}">All Products</a>
-<a class="btn btn-light btn-outline-dark ms-3" href="{% url 'deals' %}">Hot Deals</a>
+<a class="btn btn-warning btn-outline-dark ms-3" href="{% url 'deals' %}">Hot Deals</a>
 <hr />
 <div class="accordion accordion-flush" id="accordionFlushExample">
   {% for category in categories %}

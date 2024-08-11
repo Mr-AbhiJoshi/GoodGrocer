@@ -7,51 +7,97 @@
 
 {% block body %}
 
-<h1>{{request.user.username}}'s Cart</h1>
 {% if cartItems %}
-<table class="table">
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Measurement Sold</th>
-            <th>Unit Price</th>
-            <th>Packages Ordered</th>
-            <th>Total Price</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in cartItems %}
-        <tr>
-            <td>{{item.product.name}}</td>
-            <td>{{item.product.quantity}}</td>
-            <td>${{item.product.price|floatformat:2}}</td>
-            <td>{{item.quantity}}</td>
-            <td>${{item.total_price|floatformat:2}}</td>
-            <td>
-                <a class="btn btn-primary" href="{% url 'addToCart' item.product.id %}" style="width: absolute;">Add</a>
-                <a href="{% url 'removeFromCart' item.product.id %}" class="btn btn-danger">Remove</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<style>
+    .image-container {
+        position: relative;
+        width: 100%;
+        padding-top: 75%; /* This creates a 4:3 aspect ratio container (change this for different ratios) */
+        overflow: hidden;
+        border-radius: 0.5rem; /* Optional: Adds rounded corners */
+    }
+    
+    .responsive-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensures the image covers the container without distortion */
+        border-radius: inherit; /* Optional: Ensures the image inherits the container's rounded corners */
+    }
+    
+</style>
 
-<hr>
+<section class="h-100">
+    <div class="container h-100 py-5">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-10">
+  
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-normal mb-0">Your Shopping Cart</h3>
+            <div>
+              <p class="mb-0"><a class="btn btn-danger" href="{% url 'clearCart' request.user.id %}">Clear Cart</a></p>
+            </div>
+          </div>
+          {% for item in cartItems %}
+          <div class="card rounded-3 mb-4">
+            <div class="card-body p-4">
+              <div class="row d-flex justify-content-between align-items-center">
+                <div class="col-md-2 col-lg-2 col-xl-2">
+                    <div class="image-container">
+                        {% with image_path='images/product/'|add:item.product.imageTag|add:'.jpg' %}
+                        <img src="{% static image_path %}" alt="Thumbnail" class="responsive-image">
+                        {% endwith %} 
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-xl-3">
+                  <p class="lead fw-normal mb-2">{{item.product.name}}</p>
+                  <p><p class="text-muted">Measurement Sold: {{item.product.quantity}}</p> <p class="text-muted">Unit Price: ${{item.product.price|floatformat:2}}</p></p>
+                </div>
+                <div class="col-md-3 col-lg-3 col-xl-2">
+                    <h6>Quantity ordered: {{item.quantity}}</h6>
+                </div>
+                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                  <h5 class="mb-0">Price: ${{item.total_price|floatformat:2}}</h5>
+                </div>
+                <div class="col-md-3 col-lg-3 col-xl-2">
+                    <a class="btn btn-primary" href="{% url 'addToCart' item.product.id %}">Add</a>
+                    <a class="btn btn-danger" href="{% url 'removeFromCart' item.product.id %}">Remove</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          <div class="card text-center">
+            <div class="card-body">
+                <h3>Total Cart Price: ${{ total_price|floatformat:2 }}</h3>
+            </div>
+            <div class="card-body">
+                <a class="btn btn-primary mx-3 py-2" href="{% url 'shop' %}">Continue Shopping</a>
+                <a class="btn btn-secondary mx-3 py-2" href="{% url 'checkout' request.user.id %}">Proceed to Checkout</a>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  </section>
+  {% else %}
 
-<h3>Total Cart Price: ${{ total_price|floatformat:2 }}</h3>
+  <div class="p-5 mb-4 bg-body-tertiary rounded-3 text-center">
+    <div class="container-fluid py-5">
+      <h1 class="display-5 fw-bold">Your cart is empty.</h1>
+      <p class=" fs-4 text-center">
+        Why don't you go ahead and enjoy some wonderful shopping experience.
+      </p>
+      <a class="btn btn-primary" href="{% url 'shop' %}" style="width: absolute;">Start shopping</a>
 
-<a class="btn btn-danger" href="{% url 'clearCart' request.user.id %}">Clear Cart</a>
-
-<a class="btn btn-primary" href="{% url 'shop' %}">Continue Shopping</a>
-
-<a class="btn btn-secondary" href="{% url 'checkout' request.user.id %}">Checkout</a>
-
-{% else %}
-
-<h1>Your cart is empty.</h1>
-<a class="btn btn-primary" href="{% url 'shop' %}">Start Shopping</a>
-
-{% endif %}
+      <a class="btn btn-secondary" href="{% url 'home' %}" style="width: absolute;">Home Page</a>
+    </div>
+  </div>
+  
+  
+  {% endif %}
 
 {% endblock body %}
