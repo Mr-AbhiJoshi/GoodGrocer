@@ -5,8 +5,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import  productCategory, productSubcategory, productItem, Cart, CartItem
-#from .forms import <Your form names>
+from .models import  productCategory, productSubcategory, productItem, Cart, CartItem, Contact
+from .forms import ContactForm
 
 
 # Create your views here.
@@ -101,6 +101,18 @@ def cartPage(request, pk):
 def learnPage(request):
     context = {}
     return render(request, 'learn.html', context)
+
+def contactUs(request):
+    form = ContactForm()
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your message has been delivered.')
+            return redirect('home')
+    
+    context = {'form':form}
+    return render(request, 'contact.html', context)
 
 def dealsPage(request):
     q = request.GET.get('q') if request.GET.get('q') is not None else ''
