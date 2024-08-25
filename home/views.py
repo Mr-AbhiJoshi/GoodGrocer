@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import  productCategory, productSubcategory, productItem, Cart, CartItem, Contact
 from .forms import ContactForm
+import uuid
 
 
 # Create your views here.
@@ -29,6 +30,7 @@ def loginUser(request):
             user = User.objects.get(username=username)
         except:
             messages.error(request,'User not found')
+            return redirect('login')
         
         user = authenticate(username=username, password=password)
         
@@ -36,7 +38,7 @@ def loginUser(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, 'Username OR Password does not match')
+            messages.error(request, 'Username and Password does not match')
     
     context = {'user_exists':user_exists}
     return render(request, 'login_register.html', context)
@@ -46,8 +48,6 @@ def logoutUser(request):
     return redirect('home')
 
 def registerUser(request):
-    form = UserCreationForm
-    
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -58,6 +58,9 @@ def registerUser(request):
             return redirect('home')
         else:
             messages.error(request, 'An error occured during registration. Please ensure you are filling the form correctly!')
+            
+    else:
+        form = UserCreationForm()
     
     context = {'form':form}
     return render(request, 'login_register.html', context)
@@ -190,5 +193,7 @@ def checkoutPage(request, pk):
     return render(request, 'checkout.html', context)
 
 def orderPlaced(request):
-    context = {}
+    uuid_part = str(uuid.uuid4())[:8]
+    order_id = f"{uuid_part}"
+    context = {'order_id':order_id}
     return render(request, 'order_placed.html', context)
