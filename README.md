@@ -26,15 +26,31 @@
 ## 📁 Project Structure
 
 GoodGrocer/
+
 ├── goodgrocer/ # Core Django application
+
 ├── templates/ # HTML templates
+
 ├── static/ # Static files (CSS, JS, Images)
+
 ├── db.sqlite3 # SQLite database
+
 └── manage.py # Django management script
 
 ## 📸 Screenshots
 
-*Include relevant screenshots here to showcase the UI and features.*
+- **Landing Page**
+![Landing Page of the website](screenshots/landing_page.png)
+
+- **Sign Up Prompt**
+![Sign Up Screen](screenshots/sign_up.png)
+
+- **Sign In Prompt**
+![Sign In Screen](screenshots/sign_in.png)
+
+- **Items Displayed**
+![Displayed Items for sale](screenshots/item_display1.png)
+![Displayed Items for sale](screenshots/item_display2.png)
 
 ---
 
@@ -45,6 +61,7 @@ Follow these steps to set up and run the project locally:
 ### 1. Clone the Repository
 
 git clone https://github.com/Mr-AbhiJoshi/GoodGrocer.git
+
 cd GoodGrocer
 
 ### 2. Create a Virtual Environment
@@ -78,6 +95,9 @@ Access the application at: http://127.0.0.1:8000/
 ## 🧑‍💻 Author
 
 Abhishek Joshi
+
 Aspiring Software Engineer | Full-Stack Developer
+
 📍 Wollongong, New South Wales, Australia
+
 📧 abhijoshi1441@gmail.com
